@@ -2,11 +2,15 @@
 import React, { useEffect, useReducer } from 'react'
 import Header from './components/Header/Header'
 import Main from './components/Main/Main'
+import Loader from './components/Loader/Loader'
+import Error from './components/Error/Error'
+import QuestionCard from './components/QuestionCard/QuestionCard'
+import Question from './components/Question/Question'
 
 const initialState = {
   questions: [],
   status: 'loading',
-  index: 0,
+  index: 0, // 1, 2 ...
   answer: null,
   points: 0,
   highscore: 0
@@ -25,6 +29,11 @@ const reducer = (state, action) => {
         ...state,
         status: 'error'
       }
+    case 'start':
+      return {
+        ...state,
+        status: 'active',
+      }
 
     default:
       throw new Error('Unknown action')
@@ -33,9 +42,9 @@ const reducer = (state, action) => {
 }
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, index }, dispatch] = useReducer(reducer, initialState);
 
-
+  const numberQuestions = questions.length;
 
 useEffect(() => {
   const fetchQuestions = async () => {
@@ -58,8 +67,10 @@ useEffect(() => {
     <div className='app'>
       < Header />
       <Main>
-        <p> 1 / 15</p>
-        <p>Question?</p>
+        {status === 'loading' && <Loader />}
+        {status === 'error' && <Error />}
+        {status === 'ready' && <QuestionCard numberQuestions={numberQuestions} dispatch={dispatch} />}
+        {status === 'active' && <Question questions={questions[index]} />} 
       </Main>
     </div>
   )
