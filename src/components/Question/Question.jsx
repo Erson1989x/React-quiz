@@ -1,13 +1,13 @@
-import React from 'react'
-import Options from './Options'
+import React from "react";
+import Options from "./Options";
 
-const Question = ( {questions} ) => {
+const Question = ({ questions, dispatch, answer, points }) => {
   return (
     <div>
-        <h4>{questions.question}</h4>
-        <Options questions={questions} />
+      <h4>{questions.question}</h4>
+      <Options points={points} dispatch={dispatch} answer={answer} questions={questions} />
     </div>
-  )
-}
+  );
+};
 
-export default Question
+export default Question;
