@@ -6,6 +6,7 @@ import Error from "./components/Error/Error";
 import QuestionCard from "./components/QuestionCard/QuestionCard";
 import Question from "./components/Question/Question";
 import NextButton from "./components/NextButton/NextButton";
+import Progress from "./components/Progress/Progress";
 
 const initialState = {
   questions: [],
@@ -64,6 +65,7 @@ const App = () => {
   );
 
   const numberQuestions = questions.length;
+  const maxPossiblePoints = questions.reduce((prev, cur) => prev + cur.points, 0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -89,6 +91,7 @@ const App = () => {
         )}
         {status === "active" && (
           <>
+          <Progress index={index} numberQuestions={numberQuestions} points={points} maxPossiblePoints={maxPossiblePoints} answer={answer} />
           <Question
             dispatch={dispatch}
             answer={answer}
